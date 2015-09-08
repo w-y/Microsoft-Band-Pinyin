@@ -52,7 +52,8 @@ Google Play: <https://play.google.com/store/apps/details?id=com.microsoft.kapp>
 ![image](http://77wdbg.com1.z0.glb.clouddn.com/githubE218C200D2A0CE3EACF429D09AF19C46.jpg?imageView/2/w/250/q/85)
 
 效果图:
-![image](http://77wdsu.com1.z0.glb.clouddn.com/_1021374680_20150908_090646_1441674406000_wifi_0.jpg?imageView/2/w/250/q85)
+
+![image](http://77wdsu.com1.z0.glb.clouddn.com/_1021374680_20150908_090646_1441674406000_wifi_0.jpg?imageView/2/w/250/q/100)
 
 ### 短信内容转拼音
 
