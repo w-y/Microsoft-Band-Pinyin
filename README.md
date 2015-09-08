@@ -53,7 +53,7 @@ Google Play: <https://play.google.com/store/apps/details?id=com.microsoft.kapp>
 
 效果图:
 
-![image](http://77wdsu.com1.z0.glb.clouddn.com/_1021374680_20150908_090646_1441674406000_wifi_0.jpg?imageView/2/w/250/q/100)
+![image](http://77wdsu.com1.z0.glb.clouddn.com/_-722232968_20150908_090459_1441674299000_wifi_0.jpg?imageView/2/w/250/q/100)
 
 ### 短信内容转拼音
 
