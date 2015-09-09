@@ -42,12 +42,12 @@ import java.util.UUID;
 
 public class BandNotificationToPinyinActivity extends Activity {
 
-	private BandClient client = null;
-	private Button btnStart;
-	private TextView txtStatus;
+    private BandClient client = null;
+    private Button btnStart;
+    private TextView txtStatus;
     private BandNotificationToPinyin mApp;
-	
-	private UUID tileId = UUID.fromString("aa0D508F-70A3-47D4-BBA3-812BADB1F8Aa");
+
+    private UUID tileId = UUID.fromString("aa0D508F-70A3-47D4-BBA3-812BADB1F8Aa");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,16 +55,16 @@ public class BandNotificationToPinyinActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         txtStatus = (TextView) findViewById(R.id.txtStatus);
-		
+
         btnStart = (Button) findViewById(R.id.btnStart);
         btnStart.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 txtStatus.setText("");
                 new appTask("hello", "it's a test message").execute();
-			}
-		});
-		mApp = (BandNotificationToPinyin)this.getApplicationContext();
+            }
+        });
+        mApp = (BandNotificationToPinyin) this.getApplicationContext();
     }
 
     public void sendToBand(String title, String message) {
@@ -73,94 +73,96 @@ public class BandNotificationToPinyinActivity extends Activity {
 
     protected void onResume() {
         super.onResume();
-		mApp.setCurrentActivity(this);
+        mApp.setCurrentActivity(this);
     }
+
     protected void onPause() {
         super.onPause();
     }
+
     protected void onDestroy() {
         clearReferences();
         super.onDestroy();
     }
 
-    private void clearReferences(){
+    private void clearReferences() {
         Activity currActivity = mApp.getCurrentActivity();
 
         if (currActivity != null && currActivity.equals(this)) {
-			mApp.setCurrentActivity(null);
-		}
+            mApp.setCurrentActivity(null);
+        }
     }
 
-	private class appTask extends AsyncTask<Void, Void, Void> {
+    private class appTask extends AsyncTask<Void, Void, Void> {
         private String message;
-		private String title;
+        private String title;
 
         public appTask(String title, String message) {
             this.title = title;
-			this.message = message;
+            this.message = message;
         }
 
         @Override
-		protected Void doInBackground(Void... params) {
-			try {
-				if (getConnectedBandClient()) {
-					if (doesTileExist(client.getTileManager().getTiles().await(), tileId)) {
-						sendMessage(title, message);
-					} else {
-						if(addTile()) {
-							sendMessage("hint", "Send message to new message tile");
-						}
-					}
-				} else {
-					appendToUI("Band isn't connected. Please make sure bluetooth is on and the band is in range.\n");
-				}
-			} catch (BandException e) {
-				String exceptionMessage="";
-				switch (e.getErrorType()) {
-				case DEVICE_ERROR:
-					exceptionMessage = "Please make sure bluetooth is on and the band is in range.";
-					break;
-				case UNSUPPORTED_SDK_VERSION_ERROR:
-					exceptionMessage = "Microsoft Health BandService doesn't support your SDK Version. Please update to latest SDK.";
-					break;
-				case SERVICE_ERROR:
-					exceptionMessage = "Microsoft Health BandService is not available. Please make sure Microsoft Health is installed and that you have the correct permissions.";
-					break;
-				case BAND_FULL_ERROR:
-					exceptionMessage = "Band is full. Please use Microsoft Health to remove a tile.";
-					break;
-				default:
-					exceptionMessage = "Unknown error occured: " + e.getMessage();
-					break;
-				}
-				appendToUI(exceptionMessage);
+        protected Void doInBackground(Void... params) {
+            try {
+                if (getConnectedBandClient()) {
+                    if (doesTileExist(client.getTileManager().getTiles().await(), tileId)) {
+                        sendMessage(title, message);
+                    } else {
+                        if (addTile()) {
+                            sendMessage("hint", "Send message to new message tile");
+                        }
+                    }
+                } else {
+                    appendToUI("Band isn't connected. Please make sure bluetooth is on and the band is in range.\n");
+                }
+            } catch (BandException e) {
+                String exceptionMessage = "";
+                switch (e.getErrorType()) {
+                    case DEVICE_ERROR:
+                        exceptionMessage = "Please make sure bluetooth is on and the band is in range.";
+                        break;
+                    case UNSUPPORTED_SDK_VERSION_ERROR:
+                        exceptionMessage = "Microsoft Health BandService doesn't support your SDK Version. Please update to latest SDK.";
+                        break;
+                    case SERVICE_ERROR:
+                        exceptionMessage = "Microsoft Health BandService is not available. Please make sure Microsoft Health is installed and that you have the correct permissions.";
+                        break;
+                    case BAND_FULL_ERROR:
+                        exceptionMessage = "Band is full. Please use Microsoft Health to remove a tile.";
+                        break;
+                    default:
+                        exceptionMessage = "Unknown error occured: " + e.getMessage();
+                        break;
+                }
+                appendToUI(exceptionMessage);
 
-			} catch (Exception e) {
-				appendToUI(e.getMessage());
-			}
-			return null;
-		}
-	}
-	
-	private void appendToUI(final String string) {
-		this.runOnUiThread(new Runnable() {
+            } catch (Exception e) {
+                appendToUI(e.getMessage());
+            }
+            return null;
+        }
+    }
+
+    private void appendToUI(final String string) {
+        this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-            	txtStatus.append(string);
+                txtStatus.append(string);
             }
         });
-	}
-	
-	private boolean doesTileExist(List<BandTile> tiles, UUID tileId) {
-		for (BandTile tile:tiles) {
-			if (tile.getTileId().equals(tileId)) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	private boolean addTile() throws Exception {
+    }
+
+    private boolean doesTileExist(List<BandTile> tiles, UUID tileId) {
+        for (BandTile tile : tiles) {
+            if (tile.getTileId().equals(tileId)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean addTile() throws Exception {
         /* Set the options */
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inScaled = false;
@@ -168,36 +170,36 @@ public class BandNotificationToPinyinActivity extends Activity {
         Bitmap tileIcon = BitmapFactory.decodeResource(getBaseContext().getResources(), R.raw.tile_icon_large, options);
         Bitmap badgeIcon = BitmapFactory.decodeResource(getBaseContext().getResources(), R.raw.tile_icon_small, options);
 
-		BandTile tile = new BandTile.Builder(tileId, "MessageTile", tileIcon)
-			.setTileSmallIcon(badgeIcon).build();
-		appendToUI("Message Tile is adding ...\n");
-		if (client.getTileManager().addTile(this, tile).await()) {
-			appendToUI("Message Tile is added.\n");
-			return true;
-		} else {
-			appendToUI("Unable to add message tile to the band.\n");
-			return false;
-		}
-	}
-	
-	private void sendMessage(String title, String message) throws BandIOException {
-		client.getNotificationManager().sendMessage(tileId, title, message, new Date(), MessageFlags.SHOW_DIALOG);
-		appendToUI(message + "\n");
-	}
-	
-	private boolean getConnectedBandClient() throws InterruptedException, BandException {
-		if (client == null) {
-			BandInfo[] devices = BandClientManager.getInstance().getPairedBands();
-			if (devices.length == 0) {
-				appendToUI("Band isn't paired with your phone.\n");
-				return false;
-			}
-			client = BandClientManager.getInstance().create(getBaseContext(), devices[0]);
-		} else if (ConnectionState.CONNECTED == client.getConnectionState()) {
-			return true;
-		}
-		
-		appendToUI("Band is connecting...\n");
-		return ConnectionState.CONNECTED == client.connect().await();
-	}
+        BandTile tile = new BandTile.Builder(tileId, "MessageTile", tileIcon)
+                .setTileSmallIcon(badgeIcon).build();
+        appendToUI("Message Tile is adding ...\n");
+        if (client.getTileManager().addTile(this, tile).await()) {
+            appendToUI("Message Tile is added.\n");
+            return true;
+        } else {
+            appendToUI("Unable to add message tile to the band.\n");
+            return false;
+        }
+    }
+
+    private void sendMessage(String title, String message) throws BandIOException {
+        client.getNotificationManager().sendMessage(tileId, title, message, new Date(), MessageFlags.SHOW_DIALOG);
+        appendToUI(message + "\n");
+    }
+
+    private boolean getConnectedBandClient() throws InterruptedException, BandException {
+        if (client == null) {
+            BandInfo[] devices = BandClientManager.getInstance().getPairedBands();
+            if (devices.length == 0) {
+                appendToUI("Band isn't paired with your phone.\n");
+                return false;
+            }
+            client = BandClientManager.getInstance().create(getBaseContext(), devices[0]);
+        } else if (ConnectionState.CONNECTED == client.getConnectionState()) {
+            return true;
+        }
+
+        appendToUI("Band is connecting...\n");
+        return ConnectionState.CONNECTED == client.connect().await();
+    }
 }

@@ -1,6 +1,7 @@
 package com.microsoft.band.sdk.sampleapp.tools;
 
 import android.content.Context;
+
 import com.microsoft.band.sdk.sampleapp.BandNotificationToPinyin;
 import com.microsoft.band.sdk.sampleapp.BandNotificationToPinyinActivity;
 
@@ -31,7 +32,7 @@ public class Util {
 
     public static void sendToBand(Context context, String title, String message) {
         BandNotificationToPinyin mApp = (BandNotificationToPinyin) context.getApplicationContext();
-        BandNotificationToPinyinActivity mActivity = (BandNotificationToPinyinActivity)mApp.getCurrentActivity();
+        BandNotificationToPinyinActivity mActivity = (BandNotificationToPinyinActivity) mApp.getCurrentActivity();
 
         if (mActivity != null) {
             mActivity.sendToBand(title, message);
